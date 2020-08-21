@@ -32,7 +32,7 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/client", method =  RequestMethod.POST)
+    @RequestMapping(value = "/client", method = RequestMethod.POST)
     public Client Post(@RequestBody Client client)
     {
         return _clientRepository.save(client);
