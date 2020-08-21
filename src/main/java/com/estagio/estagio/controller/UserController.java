@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,16 +16,18 @@ public class UserController {
     @Autowired
     private ClientRepository _clientRepository;
 
-
-    @RequestMapping(value = "/client", method = RequestMethod.GET)
-    public List<Client> Get() {
-        return _clientRepository.findAll();
-    }
-
     @RequestMapping(value = "/client/{id}", method = RequestMethod.GET)
     public ResponseEntity<Client> GetById(@PathVariable(value = "id") UUID id)
     {
         Optional<Client> clientOptional = _clientRepository.findById(id);
+        return clientOptional.map(client -> new ResponseEntity<>(client, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/client", method = RequestMethod.GET)
+    public ResponseEntity<Client> GetByEmail(@RequestBody String email)
+    {
+        Optional<Client> clientOptional = _clientRepository.findByEmail(email);
         return clientOptional.map(client -> new ResponseEntity<>(client, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -40,7 +41,7 @@ public class UserController {
     @RequestMapping(value = "/client/{id}", method =  RequestMethod.PUT)
     public ResponseEntity<Client> Put(@PathVariable(value = "id") UUID id, @RequestBody Client newClient)
     {
-        Optional<Client> oldClient = _clientRepository.findById(id);
+        Optional<Client> oldClient = _clientRepository.findByUserId(id);
         if(oldClient.isPresent()){
             Client client = oldClient.get();
             client.setUserName(newClient.getUserName());
@@ -54,7 +55,7 @@ public class UserController {
     @RequestMapping(value = "/client/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> Delete(@PathVariable(value = "id") UUID id)
     {
-        Optional<Client> client = _clientRepository.findById(id);
+        Optional<Client> client = _clientRepository.findByUserId(id);
         if(client.isPresent()){
             _clientRepository.delete(client.get());
             return new ResponseEntity<>(HttpStatus.OK);
