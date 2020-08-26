@@ -33,9 +33,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/client", method = RequestMethod.POST)
-    public Client Post(@RequestBody Client client)
+    public ResponseEntity<Client> Post(@RequestBody Client client)
     {
-        return _clientRepository.save(client);
+        Optional<Client> clientOptional = _clientRepository.findByEmail(client.getEmail());
+        if(clientOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        Client savedClient = _clientRepository.save(client);
+        return new ResponseEntity<>(savedClient, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/client/{id}", method =  RequestMethod.PUT)
