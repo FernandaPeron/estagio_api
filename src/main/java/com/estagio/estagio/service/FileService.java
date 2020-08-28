@@ -29,6 +29,10 @@ public class FileService {
     private ClientRepository clientRepository;
 
     public ResponseEntity<String> upload(MultipartFile file, UUID clientId) {
+        Optional<Client> client = clientRepository.findByUserId(clientId);
+        if(!client.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         Archive doc = new Archive();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         Optional<Archive> archive = archiveRepository.findByArchiveName(fileName);
@@ -36,10 +40,6 @@ public class FileService {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         doc.setArchiveName(fileName);
-        Optional<Client> client = clientRepository.findByUserId(clientId);
-        if(!client.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         doc.setClient(client.get());
         try {
             doc.setFile(file.getBytes());
