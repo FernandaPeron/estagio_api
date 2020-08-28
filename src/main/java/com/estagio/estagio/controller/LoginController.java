@@ -22,8 +22,7 @@ public class LoginController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Client> login(@RequestBody Client clientResponse)
-    {
+    public ResponseEntity<Client> login(@RequestBody Client clientResponse) {
         return loginService.login(clientResponse);
     }
 

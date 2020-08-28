@@ -1,10 +1,10 @@
 package com.estagio.estagio.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +22,18 @@ public class Client
 
     @Column
     private String password;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<Archive> archives = new ArrayList<>();
+
+    public List<Archive> getArchives() {
+        return archives;
+    }
+
+    public void setArchives(List<Archive> archives) {
+        this.archives = archives;
+    }
 
     public UUID getUserId() {
         return userId;
