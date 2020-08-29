@@ -33,22 +33,22 @@ public class FileController {
     @RequestMapping(value = "files/upload", method = RequestMethod.POST)
     public ResponseEntity<String> upload(
             @RequestParam("file") MultipartFile file,
-            @RequestParam UUID clientId
+            @RequestParam String clientId
     ) {
-        return fileService.upload(file, clientId);
+        return fileService.upload(file, UUID.fromString(clientId));
     }
 
     @RequestMapping(value = "files/download/{fileName:.+}", method = RequestMethod.GET)
     public ResponseEntity<byte[]> download(
             @PathVariable String fileName,
-            @RequestParam UUID clientId
+            @RequestParam String clientId
     ) {
-        return fileService.download(fileName, clientId);
+        return fileService.download(fileName, UUID.fromString(clientId));
     }
 
     @RequestMapping(value = "/files/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<List<Archive>> getFilesFromUser(@PathVariable(value = "userId") UUID id) {
-        return fileService.getFilesFromUser(id);
+    public ResponseEntity<List<Archive>> getFilesFromUser(@PathVariable(value = "userId") String id) {
+        return fileService.getFilesFromUser(UUID.fromString(id));
     }
 
 }

@@ -24,7 +24,7 @@ public class Client
     private String password;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", cascade = CascadeType.ALL)
     private List<Archive> archives = new ArrayList<>();
 
     public List<Archive> getArchives() {

@@ -15,8 +15,8 @@ public class UserController {
     private ClientService clientService;
 
     @RequestMapping(value = "/client/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Client> GetById(@PathVariable(value = "id") UUID id) {
-        return clientService.getById(id);
+    public ResponseEntity<Client> GetById(@PathVariable(value = "id") String id) {
+        return clientService.getById(UUID.fromString(id));
     }
 
     @RequestMapping(value = "/client", method = RequestMethod.GET)
@@ -31,15 +31,15 @@ public class UserController {
 
     @RequestMapping(value = "/client/{id}", method =  RequestMethod.PUT)
     public ResponseEntity<Client> putClient(
-            @PathVariable(value = "id") UUID id,
+            @PathVariable(value = "id") String id,
             @RequestBody Client newClient
     ) {
-        return clientService.putClient(id, newClient);
+        return clientService.putClient(UUID.fromString(id), newClient);
     }
 
     @RequestMapping(value = "/client/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> deleteClient(@PathVariable(value = "id") UUID id) {
-        return clientService.deleteClient(id);
+    public ResponseEntity<Object> deleteClient(@PathVariable(value = "id") String id) {
+        return clientService.deleteClient(UUID.fromString(id));
     }
 };
 
