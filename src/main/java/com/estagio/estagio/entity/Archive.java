@@ -3,6 +3,7 @@ package com.estagio.estagio.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -15,8 +16,11 @@ public class Archive {
     @Column
     private String archiveName;
 
+    @Column(name = "datetime")
+    private LocalDateTime date;
+
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
     private Client client;
 
@@ -54,5 +58,13 @@ public class Archive {
 
     public void setFile(byte[] file) {
         this.file = file;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

@@ -16,5 +16,11 @@ public interface ArchiveRepository extends JpaRepository<Archive, Long> {
     Optional<Archive> findByArchiveName(String name);
 
     @Transactional
+    Optional<Archive> findByArchiveId(UUID archiveId);
+
+    @Transactional
     List<Archive> findAllByClientUserId(UUID userId);
+
+    @Transactional
+    Optional<Archive> deleteArchiveByArchiveId(UUID archiveId);
 }

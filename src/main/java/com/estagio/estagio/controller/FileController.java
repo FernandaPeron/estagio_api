@@ -38,12 +38,14 @@ public class FileController {
         return fileService.upload(file, UUID.fromString(clientId));
     }
 
-    @RequestMapping(value = "files/download/{fileName:.+}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> download(
-            @PathVariable String fileName,
-            @RequestParam String clientId
-    ) {
-        return fileService.download(fileName, UUID.fromString(clientId));
+    @RequestMapping(value = "files/download/{archiveId}", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> download(@PathVariable String archiveId) {
+        return fileService.download(UUID.fromString(archiveId));
+    }
+
+    @RequestMapping(value = "files/delete/{archiveId}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> delete(@PathVariable String archiveId) {
+        return fileService.delete(UUID.fromString(archiveId));
     }
 
     @RequestMapping(value = "/files/{userId}", method = RequestMethod.GET)

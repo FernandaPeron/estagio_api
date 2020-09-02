@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -54,11 +55,12 @@ public class FileService {
         return new ResponseEntity<>(fileDownloadUri, HttpStatus.OK);
     }
 
-    public ResponseEntity<byte[]> download(String fileName, UUID clientId) {
-        Optional<Archive> document = archiveRepository.findByArchiveName(fileName);
-        if(document.isPresent() && !document.get().getClient().getUserId().toString().equals(clientId.toString())) {
+    public ResponseEntity<byte[]> download(UUID archiveId) {
+        Optional<Archive> document = archiveRepository.findByArchiveId(archiveId);
+        if(!document.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        String fileName = document.get().getArchiveName();
         return document.map(archive -> ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(archive.getFile())).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -67,5 +69,13 @@ public class FileService {
     public ResponseEntity<List<Archive>> getFilesFromUser(UUID id) {
         List<Archive> userFiles = archiveRepository.findAllByClientUserId(id);
         return new ResponseEntity<>(userFiles, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> delete(UUID archiveId) {
+        Optional<Archive> archive = archiveRepository.deleteArchiveByArchiveId(archiveId);
+        if (archive.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
