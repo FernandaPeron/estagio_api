@@ -72,10 +72,7 @@ public class FileService {
     }
 
     public ResponseEntity<String> delete(UUID archiveId) {
-        Optional<Archive> archive = archiveRepository.deleteArchiveByArchiveId(archiveId);
-        if (archive.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        archiveRepository.deleteArchiveByArchiveId(archiveId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

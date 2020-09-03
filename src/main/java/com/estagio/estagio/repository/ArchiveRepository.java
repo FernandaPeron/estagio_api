@@ -2,6 +2,8 @@ package com.estagio.estagio.repository;
 
 import com.estagio.estagio.entity.Archive;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -22,5 +24,7 @@ public interface ArchiveRepository extends JpaRepository<Archive, Long> {
     List<Archive> findAllByClientUserId(UUID userId);
 
     @Transactional
-    Optional<Archive> deleteArchiveByArchiveId(UUID archiveId);
+    @Modifying
+    @Query("delete from Archive a where a.archiveId = ?1")
+    void deleteArchiveByArchiveId(UUID archiveId);
 }

@@ -17,7 +17,7 @@ public class Archive {
     private String archiveName;
 
     @Column(name = "datetime")
-    private LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
