@@ -53,4 +53,12 @@ public class FileController {
         return fileService.getFilesFromUser(UUID.fromString(id));
     }
 
+    @RequestMapping(value = "/files/{userId}/{type}", method = RequestMethod.GET)
+    public ResponseEntity<List<Archive>> getFilesFromUserByType(
+            @PathVariable(value = "userId") String id,
+            @PathVariable(value = "type") String type
+    ) {
+        return fileService.getFilesFromUserByType(UUID.fromString(id), type);
+    }
+
 }

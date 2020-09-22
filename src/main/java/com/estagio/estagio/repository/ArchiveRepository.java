@@ -24,6 +24,9 @@ public interface ArchiveRepository extends JpaRepository<Archive, Long> {
     List<Archive> findAllByClientUserId(UUID userId);
 
     @Transactional
+    List<Archive> findAllByClientUserIdAndType(UUID userId, String type);
+
+    @Transactional
     @Modifying
     @Query("delete from Archive a where a.archiveId = ?1")
     void deleteArchiveByArchiveId(UUID archiveId);

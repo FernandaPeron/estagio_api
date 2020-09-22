@@ -13,7 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +41,7 @@ public class FileService {
         }
         doc.setArchiveName(fileName);
         doc.setClient(client.get());
+        doc.setType(fileName.substring(fileName.lastIndexOf(".") + 1));
         try {
             doc.setFile(file.getBytes());
         } catch (IOException e) {
@@ -74,5 +74,10 @@ public class FileService {
     public ResponseEntity<String> delete(UUID archiveId) {
         archiveRepository.deleteArchiveByArchiveId(archiveId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Archive>> getFilesFromUserByType(UUID userId, String type) {
+        List<Archive> userFiles = archiveRepository.findAllByClientUserIdAndType(userId, type);
+        return new ResponseEntity<>(userFiles, HttpStatus.OK);
     }
 }

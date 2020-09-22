@@ -16,6 +16,9 @@ public class Archive {
     @Column
     private String archiveName;
 
+    @Column
+    private String type;
+
     @Column(name = "datetime")
     private LocalDateTime date = LocalDateTime.now();
 
@@ -66,5 +69,13 @@ public class Archive {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
