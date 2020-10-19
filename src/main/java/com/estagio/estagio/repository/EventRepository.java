@@ -20,4 +20,5 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
     @Modifying
     @Query("delete from Event e where e.eventId = ?1")
     void deleteEventByEventId(UUID eventId);
+
 }

@@ -1,6 +1,7 @@
 package com.estagio.estagio.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,10 +24,21 @@ public class Event {
     @Column(name = "time")
     private LocalTime time = LocalTime.now();
 
+    @Column(name = "completed")
+    private Boolean completed;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id")
     private Client client;
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
 
     public UUID getEventId() {
         return eventId;

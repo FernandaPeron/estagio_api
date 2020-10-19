@@ -40,4 +40,14 @@ public class EventService {
     public void deleteEvent(UUID eventId) {
         eventRepository.deleteEventByEventId(eventId);
     }
+
+    public ResponseEntity<Event> toggleEventCompleted(UUID id, Boolean completed) {
+        Optional<Event> originalEvent = eventRepository.findById(id);
+        if (!originalEvent.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Event event = originalEvent.get();
+        event.setCompleted(completed);
+        return new ResponseEntity<>(eventRepository.save(event), HttpStatus.OK);
+    }
 }

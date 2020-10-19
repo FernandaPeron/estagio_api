@@ -31,5 +31,15 @@ public class EventController {
         eventService.deleteEvent(UUID.fromString(eventId));
     }
 
+    @RequestMapping(value = "/event/{eventId}/complete", method = RequestMethod.PUT)
+    public ResponseEntity<Event> completeEvent(@PathVariable String eventId) {
+        return eventService.toggleEventCompleted(UUID.fromString(eventId), true);
+    }
+
+    @RequestMapping(value = "/event/{eventId}/reset", method = RequestMethod.PUT)
+    public ResponseEntity<Event> resetEvent(@PathVariable String eventId) {
+        return eventService.toggleEventCompleted(UUID.fromString(eventId), false);
+    }
+
 };
 
